@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assistant · MarketLens</title>
+  <meta name="description" content="Ask a plain-English question about the 10-K filings of seven technology companies.">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .composer {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: 24px; box-shadow: var(--shadow);
+      padding: 18px 18px 14px; transition: border-color .15s, box-shadow .15s;
+    }
+    .composer:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(217,119,87,.18), var(--shadow); }
+    textarea {
+      display: block; width: 100%; min-height: 78px; max-height: 260px; resize: none;
+      border: 0; outline: 0; background: transparent; color: var(--ink);
+      font: inherit; font-size: 18px; line-height: 1.5; padding: 2px 2px 10px;
+    }
+    textarea::placeholder { color: var(--muted); opacity: .8; }
+    .label {
+      display: block; font-size: 12px; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 7px;
+    }
+    .chips-row { border-top: 1px solid var(--line); padding-top: 12px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      font: inherit; font-size: 14px; color: var(--ink); background: transparent; cursor: pointer;
+      border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px;
+    }
+    .chip:hover { background: var(--soft); }
+    .chip.active { background: var(--accent-tint); border-color: var(--accent); color: var(--accent-strong); font-weight: 600; }
+    @media (prefers-color-scheme: dark) { .chip.active { color: var(--accent); } }
+    .foot-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 14px; }
+    select {
+      font: inherit; font-size: 14px; color: var(--ink); background: var(--bg);
+      border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px;
+    }
+    .send-wrap { display: flex; align-items: center; gap: 12px; }
+    .hint { color: var(--muted); font-size: 13px; }
+    .send {
+      width: 42px; height: 42px; border: 0; border-radius: 12px; background: var(--accent);
+      color: #fff; cursor: pointer; display: grid; place-items: center;
+    }
+    .send:hover { background: var(--accent-strong); }
+    .send:disabled { opacity: .5; cursor: wait; }
+    .send svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+    .examples { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 18px 0 28px; }
+    .example {
+      display: inline-flex; align-items: baseline; gap: 8px; font: inherit; font-size: 14px;
+      color: var(--ink); background: transparent; cursor: pointer;
+      border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px;
+    }
+    .example:hover { background: var(--soft); }
+    .example b { font-size: 12px; color: var(--accent-strong); }
+    @media (prefers-color-scheme: dark) { .example b { color: var(--accent); } }
+
+    .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+             padding: 22px; margin-bottom: 16px; box-shadow: var(--shadow); }
+    .loading-head { display: flex; align-items: center; gap: 12px; font-family: var(--serif); font-size: 18px; }
+    .dots { display: inline-flex; gap: 5px; }
+    .dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 1.2s ease-in-out infinite; }
+    .dots i:nth-child(2) { animation-delay: .15s; }
+    .dots i:nth-child(3) { animation-delay: .3s; }
+    @keyframes pulse { 0%,80%,100% { opacity:.25; transform:scale(.8);} 40% { opacity:1; transform:scale(1);} }
+
+    .error { border-color: var(--bad); }
+    .error h3 { margin: 0 0 4px; color: var(--bad); font-size: 16px; }
+    .error p { margin: 0; }
+    .error small { color: var(--muted); }
+
+    .answer-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 16px; }
+    .copy { font: inherit; font-size: 13px; color: var(--muted); background: none; cursor: pointer;
+            border: 1px solid var(--line); border-radius: 8px; padding: 4px 11px; }
+    .copy:hover { background: var(--soft); color: var(--ink); }
+    #answer p { margin: 0 0 14px; font-family: var(--serif); font-size: 19px; line-height: 1.7; white-space: pre-line; }
+    #answer p:last-child { margin-bottom: 0; }
+    .cite {
+      display: inline-block; font-family: var(--sans); font-size: 12px; font-weight: 600; line-height: 1.5;
+      color: var(--accent-strong); background: var(--accent-tint); border-radius: 6px;
+      padding: 0 7px; margin: 0 2px; white-space: nowrap;
+    }
+    @media (prefers-color-scheme: dark) { .cite { color: var(--accent); } }
+
+    .source { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); }
+    .source:first-of-type { border-top: 0; padding-top: 6px; }
+    .num { width: 28px; height: 28px; border-radius: 8px; background: var(--soft); color: var(--muted);
+           display: grid; place-items: center; font-size: 13px; font-weight: 700; }
+    .source-title { font-weight: 600; }
+    .source-title span { color: var(--muted); font-weight: 400; }
+    .source-text { margin: 4px 0 0; color: var(--muted); font-size: 14.5px; }
+  </style>
+</head>
+<body data-page="chat">
+<div id="nav"></div>
+
+<header class="hero" style="padding-bottom:30px">
+  <div class="wrap">
+    <h1>Ask the <em>filings</em></h1>
+    <p class="lead">
+      Plain-English questions about the annual reports of Apple, Microsoft, Alphabet,
+      Amazon, Meta, Nvidia and Tesla, 2018 to 2025. Every answer shows where it came from.
+    </p>
+    <p style="margin-top:18px">
+      <span id="status-pill" class="pill" aria-live="polite"><span class="dot"></span><span id="status-text">Checking…</span></span>
+    </p>
+  </div>
+</header>
+
+<main class="wrap narrow" style="padding-bottom:20px">
+
+  <section id="offline-note" class="note hidden" style="margin-bottom:22px">
+    <b>The assistant is offline right now.</b> The language model runs on a laptop rather
+    than a server, so it answers during live sessions. The recorded examples below show
+    what it does — and you can run the whole thing yourself from the
+    <a href="https://github.com/dataroadmap" target="_blank" rel="noopener noreferrer">repository</a>.
+  </section>
+
+  <section class="composer" aria-label="Ask a question">
+    <label class="label" for="question" style="position:absolute;left:-9999px">Your question</label>
+    <textarea id="question" placeholder="Why did Nvidia's revenue jump in 2024, and what could stop it?"></textarea>
+
+    <div class="chips-row">
+      <span class="label">Company</span>
+      <div class="chips" id="company-chips" role="radiogroup" aria-label="Company">
+        <button type="button" class="chip active" role="radio" aria-checked="true" data-ticker="">Any</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-ticker="AAPL">Apple</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-ticker="MSFT">Microsoft</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-ticker="GOOGL">Alphabet</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-ticker="AMZN">Amazon</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-ticker="META">Meta</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-ticker="NVDA">Nvidia</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-ticker="TSLA">Tesla</button>
+      </div>
+    </div>
+
+    <div class="foot-row">
+      <div>
+        <label class="label" for="year">Fiscal year</label>
+        <select id="year">
+          <option value="">Any year</option>
+          <option>2025</option><option>2024</option><option>2023</option><option>2022</option>
+          <option>2021</option><option>2020</option><option>2019</option><option>2018</option>
+        </select>
+      </div>
+      <div class="send-wrap">
+        <span class="hint">Ctrl + Enter</span>
+        <button id="ask-button" class="send" type="button" aria-label="Ask MarketLens" title="Ask MarketLens">
+          <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="examples" class="examples" aria-label="Example questions">
+    <button type="button" class="example" data-ticker="NVDA" data-year="2024"
+            data-q="Why did Nvidia's revenue jump in 2024, and what could stop it?"><b>Nvidia</b>Why did revenue jump in 2024?</button>
+    <button type="button" class="example" data-ticker="TSLA" data-year=""
+            data-q="What are Tesla's main supply chain risks?"><b>Tesla</b>Main supply chain risks</button>
+    <button type="button" class="example" data-ticker="AAPL" data-year=""
+            data-q="How does Apple describe its business?"><b>Apple</b>How it describes its business</button>
+    <button type="button" class="example" data-ticker="AMZN" data-year=""
+            data-q="What drives Amazon's operating income?"><b>Amazon</b>What drives operating income</button>
+  </section>
+
+  <section id="loading" class="panel hidden" aria-live="polite">
+    <div class="loading-head"><span class="dots"><i></i><i></i><i></i></span><span>Reading the filings… <span id="elapsed">0</span> s</span></div>
+    <div class="hint" style="margin-top:10px">A small model on a laptop can take up to a minute.</div>
+  </section>
+
+  <section id="error" class="panel error hidden" role="alert">
+    <h3 id="error-title"></h3>
+    <p id="error-text"></p>
+    <small id="error-hint"></small>
+  </section>
+
+  <section id="result" class="hidden">
+    <div class="panel">
+      <div class="answer-head">
+        <span class="label" style="margin:0">Answer</span>
+        <button id="copy-button" class="copy" type="button">Copy</button>
+      </div>
+      <div id="meta" class="meta"></div>
+      <div id="answer"></div>
+    </div>
+    <div class="panel">
+      <span class="label">Sources <span id="source-count"></span></span>
+      <div id="sources"></div>
+    </div>
+  </section>
+
+  <p class="hint" style="text-align:center;margin-top:26px">
+    Answers are written by a small language model using text from SEC 10-K filings.
+    Check the sources before relying on a number. This is not investment advice.
+  </p>
+</main>
+
+<div id="foot"></div>
+<script src="assets/config.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/chat.js"></script>
+</body>
+</html>

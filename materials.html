@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Course · MarketLens</title>
+  <meta name="description" content="Slides, code and notes from the eight sessions of API to Production, the Monogram 16 cohort at DataRoadmap.">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .module {
+      display: grid; grid-template-columns: 58px 1fr auto; gap: 18px; align-items: start;
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow);
+    }
+    .module-n {
+      width: 46px; height: 46px; border-radius: 12px;
+      background: var(--accent-tint); color: var(--accent-strong);
+      display: grid; place-items: center; font-family: var(--serif); font-size: 20px;
+    }
+    @media (prefers-color-scheme: dark) { .module-n { color: var(--accent); } }
+    .module p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+    .module-links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .module-link {
+      font-size: 13.5px; font-weight: 600; white-space: nowrap;
+      border: 1px solid var(--line); border-radius: 8px; padding: 5px 12px; color: var(--muted);
+    }
+    .module-link:hover { background: var(--soft); color: var(--ink); text-decoration: none; }
+    .soon { opacity: .45; }
+    @media (max-width: 720px) {
+      .module { grid-template-columns: 46px 1fr; }
+      .module-links { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body data-page="materials">
+<div id="nav"></div>
+
+<header class="hero" style="padding-bottom:30px">
+  <div class="wrap">
+    <span class="eyebrow">Monogram 16</span>
+    <h1>From API to <em>Production</em></h1>
+    <p class="lead">
+      Eight sessions, one project. Every session adds a layer to MarketLens — and
+      the slides, code and notes from each one live here.
+    </p>
+  </div>
+</header>
+
+<main class="wrap" style="padding-bottom:10px">
+  <div class="grid" style="gap:12px">
+
+    <div class="module">
+      <span class="module-n">1</span>
+      <div>
+        <h3>Foundations and the seven layers</h3>
+        <p>What we are building and how the pieces fit. Reading a 10-K. Setting up Python and the project folder.</p>
+      </div>
+      <div class="module-links"><a class="module-link" href="#">Slides</a></div>
+    </div>
+
+    <div class="module">
+      <span class="module-n">2</span>
+      <div>
+        <h3>Getting the data</h3>
+        <p>The SEC EDGAR API, downloading 56 filings, and the difference between structured and unstructured data.</p>
+      </div>
+      <div class="module-links"><a class="module-link" href="#">Slides</a><a class="module-link" href="#">Code</a></div>
+    </div>
+
+    <div class="module">
+      <span class="module-n">3</span>
+      <div>
+        <h3>Two databases</h3>
+        <p>PostgreSQL for the figures, a vector database for the text. Chunking, embeddings and similarity search.</p>
+      </div>
+      <div class="module-links"><a class="module-link" href="#">Slides</a><a class="module-link" href="#">Code</a></div>
+    </div>
+
+    <div class="module">
+      <span class="module-n">4</span>
+      <div>
+        <h3>The model and the chatbot</h3>
+        <p>How language models work, running one locally with Ollama, and building the first answering script.</p>
+      </div>
+      <div class="module-links"><a class="module-link" href="#">Slides</a><a class="module-link" href="#">Code</a></div>
+    </div>
+
+    <div class="module">
+      <span class="module-n">5</span>
+      <div>
+        <h3>From script to service</h3>
+        <p>What an API is, requests and responses, and wrapping the chatbot in FastAPI so a browser can reach it.</p>
+      </div>
+      <div class="module-links"><a class="module-link" href="#">Slides</a><a class="module-link" href="#">Code</a></div>
+    </div>
+
+    <div class="module">
+      <span class="module-n">6</span>
+      <div>
+        <h3>The screen</h3>
+        <p>Building the page people actually use, and this website.</p>
+      </div>
+      <div class="module-links soon"><span class="module-link">Coming soon</span></div>
+    </div>
+
+    <div class="module">
+      <span class="module-n">7</span>
+      <div>
+        <h3>Production and scale</h3>
+        <p>Putting it online, keeping it there, and what changes when the model no longer runs on a laptop.</p>
+      </div>
+      <div class="module-links soon"><span class="module-link">Coming soon</span></div>
+    </div>
+
+    <div class="module">
+      <span class="module-n">8</span>
+      <div>
+        <h3>Showing your work</h3>
+        <p>Turning the project into something you can put in front of an employer.</p>
+      </div>
+      <div class="module-links soon"><span class="module-link">Coming soon</span></div>
+    </div>
+
+  </div>
+
+  <section class="section">
+    <div class="narrow">
+      <div class="note">
+        <b>Adding materials.</b> Drop files into <span class="mono">materials/</span> in the
+        repository and point the links above at them. Anything large — recordings, datasets —
+        is better linked than committed.
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="foot"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

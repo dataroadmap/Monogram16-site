@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Team · MarketLens</title>
+  <meta name="description" content="The eighteen people of the Monogram 16 cohort who built MarketLens.">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .person {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .person-top { display: flex; align-items: center; gap: 14px; }
+    .avatar {
+      width: 54px; height: 54px; flex: none;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--soft);
+    }
+    .avatar.initials {
+      display: grid; place-items: center;
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--accent-strong);
+      background: var(--accent-tint);
+    }
+    .person-role { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+    .person-bio { margin: 0; color: var(--muted); font-size: 15px; }
+    .person-tags { display: flex; flex-wrap: wrap; }
+    .person-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 4px; }
+    .person-link {
+      font-size: 13.5px; font-weight: 600;
+      border: 1px solid var(--line); border-radius: 8px;
+      padding: 4px 11px; color: var(--muted);
+    }
+    .person-link:hover { background: var(--soft); color: var(--ink); text-decoration: none; }
+  </style>
+</head>
+<body data-page="team">
+<div id="nav"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Monogram 16</span>
+    <h1>The people who <em>built</em> it</h1>
+    <p class="lead">
+      MarketLens was built over eight sessions by one cohort. Every layer of it —
+      the pipeline, the databases, the model, the API, this website — was someone’s job.
+    </p>
+    <p class="lead" style="margin-top:14px"><span class="pill" id="team-count">loading…</span></p>
+  </div>
+</header>
+
+<section class="section" style="padding-top:12px">
+  <div class="wrap">
+    <div class="grid three" id="team-grid">
+      <p class="person-bio">Loading the team…</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap narrow">
+    <div class="note">
+      <b>Are you on this list?</b> Your profile is yours to edit. Open
+      <span class="mono">data/team.json</span> in the repository, change your own entry,
+      and send a pull request — the page updates when it is merged. Step-by-step
+      instructions are in <span class="mono">CONTRIBUTING.md</span>.
+    </div>
+  </div>
+</section>
+
+<div id="foot"></div>
+<script src="assets/site.js"></script>
+<script src="assets/team.js"></script>
+</body>
+</html>
