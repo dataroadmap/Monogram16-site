@@ -7,4 +7,4 @@
 //                                          the recorded examples still work.
 // ---------------------------------------------------------------------------
 
-window.MARKETLENS_API = "https://items-prozac-progress-inexpensive.trycloudflare.com";
+window.MARKETLENS_API = "https://missed-qualify-cases-subsidiaries.trycloudflare.com";
