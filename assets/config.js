@@ -7,4 +7,4 @@
 //                                          the recorded examples still work.
 // ---------------------------------------------------------------------------
 
-window.MARKETLENS_API = "http://127.0.0.1:8000";
+window.MARKETLENS_API = "https://items-prozac-progress-inexpensive.trycloudflare.com";
