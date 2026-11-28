@@ -13,7 +13,7 @@
   },
   {
     "slug": "student-02",
-    "name": "Sara Ahmadi",
+    "name": "Amirreza Mehraban",
     "role": "Student · Monogram 16",
     "bio": "Worked on the EDGAR download pipeline and the checks that confirm each folder holds the right company.",
     "focus": ["Pipeline", "Data quality"],
