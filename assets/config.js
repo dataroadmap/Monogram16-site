@@ -7,4 +7,4 @@
 //                                          the recorded examples still work.
 // ---------------------------------------------------------------------------
 
-https://congressional-large-dig-directive.trycloudflare.com 
+window.MARKETLENS_API = "https://congressional-large-dig-directive.trycloudflare.com ";
