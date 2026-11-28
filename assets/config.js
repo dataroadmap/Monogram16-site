@@ -7,4 +7,4 @@
 //                                          the recorded examples still work.
 // ---------------------------------------------------------------------------
 
-window.MARKETLENS_API = "";
+window.MARKETLENS_API = "https://superb-imported-tin-gras.trycloudflare.com";
